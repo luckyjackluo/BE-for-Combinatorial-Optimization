@@ -204,45 +204,38 @@ def save_qap_instance(dist, flow, filename):
 
 def main():
     # Create output directory
-    output_dir = "qap/input_data/synthetic"
+    output_dir = "input_data/synthetic"
     os.makedirs(output_dir, exist_ok=True)
     
     # Fixed size for all instances
-    n = 20
+    n = 1000
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    print(f"Generating 1000 QAP instances of size n={n}")
+    print(f"Generating geometric QAP instances for facility location problems of size n={n}")
     print(f"Output directory: {output_dir}")
     print(f"Started at: {timestamp}")
     
-    # Generate 1000 instances with varying densities
-    instances_count = 0
-    num_instances = 1000
-    
-    # Use a fixed density value
-    #densities = np.array([1.0])
+    # Generate instances
+    num_instances = 5
     
     instance_counter = 0
     while instance_counter < num_instances:
-        # Cycle through densities
-        density = 1.0 #densities[instance_counter % len(densities)]
-        
         # Random seed for each instance
         seed = instance_counter
         
-        # Generate a sparse QAP instance
-        dist, flow = generate_sparse_qap(n, density=density, seed=seed)
+        # Generate a geometric QAP instance for facility location
+        dist, flow = generate_geometric_qap(n, seed=seed)
         
-        # Save the instance with unique id
-        filename = os.path.join(output_dir, f"qap_n{n}_d{density:.2f}_id{instance_counter}.dat")
+        # Save the instance with unique id (using 'geo' to indicate geometric type)
+        filename = os.path.join(output_dir, f"qap_n{n}_geo_id{instance_counter}.dat")
         save_qap_instance(dist, flow, filename)
         
-        if instance_counter % 100 == 0:
-            print(f"Progress: {instance_counter}/{num_instances} instances")
+        if instance_counter % 1 == 0:  # Print progress for each instance since we only have 5
+            print(f"Progress: {instance_counter + 1}/{num_instances} instances")
         
         instance_counter += 1
     
     end_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    print(f"Generation complete! {num_instances} instances created.")
+    print(f"Generation complete! {num_instances} geometric QAP instances created.")
     print(f"Ended at: {end_timestamp}")
 
 if __name__ == "__main__":

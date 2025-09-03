@@ -5,10 +5,50 @@ from scipy.optimize import quadratic_assignment
 import logging
 from datetime import datetime
 import argparse
+import torch
+
+def compute_qap_cost_torch(A, B, P):
+    """
+    Compute QAP cost using torch tensors.
+    A: (N,N) distance matrix
+    B: (N,N) flow matrix  
+    P: (N,N) permutation matrix
+    """
+    # Ensure all tensors are float32
+    A = A.to(dtype=torch.float32)
+    B = B.to(dtype=torch.float32)
+    P = P.to(dtype=torch.float32)
+    PBPT = P @ B @ P.T   # P B P^T
+    return torch.sum(A * PBPT)
+
+def compute_qap_cost_numpy(dist_matrix, flow_matrix, permutation):
+    """
+    Compute QAP cost using numpy arrays.
+    dist_matrix: (N,N) distance matrix
+    flow_matrix: (N,N) flow matrix
+    permutation: (N,) permutation vector where permutation[i] = facility assigned to location i
+    """
+    n = len(permutation)
+    total_cost = 0.0
+    
+    for i in range(n):
+        for j in range(n):
+            total_cost += dist_matrix[i, j] * flow_matrix[permutation[i], permutation[j]]
+    
+    return total_cost
+
+def permutation_to_matrix(permutation):
+    """Convert permutation vector to permutation matrix."""
+    n = len(permutation)
+    P = np.zeros((n, n))
+    for i, j in enumerate(permutation):
+        P[i, j] = 1.0
+    return P
 
 # Set up logging
 def setup_logging(dataset_type):
-    log_filename = f'qap_results_{datetime.now().strftime("%Y%m%d_%H%M%S")}_{dataset_type}_faq.log'
+    log_filename = f'log/qap_results_{datetime.now().strftime("%Y%m%d_%H%M%S")}_{dataset_type}_scipy.log'
+    os.makedirs('log', exist_ok=True)
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(message)s',
@@ -91,7 +131,7 @@ def solve_qap_instance(file_path, dataset_type='real'):
         
         # Get optimal solution if available
         if dataset_type == 'real':
-            sol_file = file_path.replace('prob', 'sol').replace('.dat', '.sln')
+            sol_file = file_path.replace('input_data/real/prob', 'input_data/real/sol').replace('.dat', '.sln')
         else:  # synthetic
             sol_file = None  # No optimal solutions for synthetic instances
         
@@ -110,8 +150,21 @@ def solve_qap_instance(file_path, dataset_type='real'):
         # Calculate runtime
         runtime = time.time() - start_time
         
-        # Calculate objective value
-        objective_value = result.fun
+        # Calculate objective value using our consistent objective function
+        # Use both scipy's result and our own calculation for verification
+        scipy_objective = result.fun
+        
+        # Recalculate using our consistent objective function
+        our_objective_numpy = compute_qap_cost_numpy(dist_matrix, flow_matrix, result.col_ind)
+        
+        # Also calculate using torch version for consistency with grad_be
+        A_torch = torch.tensor(dist_matrix, dtype=torch.float32)
+        B_torch = torch.tensor(flow_matrix, dtype=torch.float32)
+        P_torch = torch.tensor(permutation_to_matrix(result.col_ind), dtype=torch.float32)
+        our_objective_torch = compute_qap_cost_torch(A_torch, B_torch, P_torch).item()
+        
+        # Use our consistent calculation as the final objective
+        objective_value = our_objective_numpy
         
         # Calculate gap if optimal value is available
         gap = None
@@ -121,6 +174,8 @@ def solve_qap_instance(file_path, dataset_type='real'):
         return {
             'success': True,
             'objective_value': objective_value,
+            'scipy_objective': scipy_objective,
+            'torch_objective': our_objective_torch,
             'optimal_value': optimal_value,
             'gap': gap,
             'runtime': runtime,
@@ -144,9 +199,9 @@ def main():
     
     # Set directory based on dataset type
     if args.dataset == 'real':
-        prob_dir = 'qap/prob'
+        prob_dir = 'input_data/real/prob'
     else:  # synthetic
-        prob_dir = 'qap/synthetic'
+        prob_dir = 'input_data/synthetic'
     
     # Get all .dat files from the directory
     instance_files = [f for f in os.listdir(prob_dir) if f.endswith('.dat')]
@@ -163,7 +218,16 @@ def main():
             result = solve_qap_instance(file_path, args.dataset)
             
             if result['success']:
-                logging.info(f"Objective value: {result['objective_value']}")
+                logging.info(f"Objective value (our calculation): {result['objective_value']}")
+                logging.info(f"Scipy objective: {result['scipy_objective']}")
+                logging.info(f"Torch objective: {result['torch_objective']}")
+                
+                # Check consistency between calculations
+                diff_scipy = abs(result['objective_value'] - result['scipy_objective'])
+                diff_torch = abs(result['objective_value'] - result['torch_objective'])
+                logging.info(f"Difference from scipy: {diff_scipy:.6f}")
+                logging.info(f"Difference from torch: {diff_torch:.6f}")
+                
                 if result['optimal_value'] is not None:
                     logging.info(f"Optimal value: {result['optimal_value']}")
                     logging.info(f"Gap: {result['gap']:.2f}%")

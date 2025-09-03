@@ -1,0 +1,104 @@
+# Input data files - exclude all data files from version control
+input_data/
+qap/input_data/
+tsp/input_data/
+dfa/data/
+tsp/test_data/
+
+# Data file extensions
+*.pt
+*.npy
+*.dat
+*.csv
+*.edgelist
+*.meta
+*.sln
+*.txt
+*.zip
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Log files
+*.log
+log/
+logs/
+
+# Model checkpoints and training outputs
+train_*/
+model_*/
+checkpoints/
+*.pth
+*.pkl
+*.pickle
+
+# Results and output directories
+results/
+output/
+eval_*/
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Large data files that shouldn't be in version control
+*.h5
+*.hdf5
+*.mat
+*.pkl
+*.pickle
+*.joblib
+
+# Specific large files that might be generated
+decoded_tours.pt
+test_heatmaps_*.zip

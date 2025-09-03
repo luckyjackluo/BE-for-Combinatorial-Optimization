@@ -30,9 +30,9 @@ def main():
 
     # Set directory based on dataset type
     if args.dataset == 'real':
-        qap_dir = "qap/prob"
+        qap_dir = "input_data/real/prob"
     else:  # synthetic
-        qap_dir = "qap/input_data/synthetic"
+        qap_dir = "input_data/synthetic"
 
     # Load QAP instances
     all_files = os.listdir(qap_dir)
