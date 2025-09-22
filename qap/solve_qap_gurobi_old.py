@@ -212,11 +212,11 @@ def solve_qap_instance(file_path, time_limit=None):
         return {'success': False, 'error': str(ex)}
 
 # -----------------------------------------------------------------------------
-# CLI driver – iterate through all instances in qap/input_data/prob
+# CLI driver – iterate through all instances in input_data/qap/prob
 # -----------------------------------------------------------------------------
 
 def main():
-    prob_dir = 'qap/input_data/prob'
+    prob_dir = '../input_data/qap/prob'
     instances = [f for f in os.listdir(prob_dir) if f.endswith('.dat')]
     instances.sort(key=lambda f: os.path.getsize(os.path.join(prob_dir, f)))
 

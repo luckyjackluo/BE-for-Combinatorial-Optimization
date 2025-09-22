@@ -50,13 +50,13 @@ num_terms = target_num_terms
 target_num_input = 20
 gen = True
 input_lst = []
-data_lst = torch.load(f"input_data/data_lst_{target_num_terms}.pt")
-cost_lst = torch.load(f"input_data/cost_lst_{target_num_terms}.pt")
-dist_lst = torch.load(f"input_data/dist_lst_{target_num_terms}.pt")
+data_lst = torch.load(f"../input_data/tsp/data_lst_{target_num_terms}.pt")
+cost_lst = torch.load(f"../input_data/tsp/cost_lst_{target_num_terms}.pt")
+dist_lst = torch.load(f"../input_data/tsp/dist_lst_{target_num_terms}.pt")
 if "random" in S:
-    data_lst = torch.load(f"input_data/data_lst_{target_num_terms}_random.pt")
-    cost_lst = torch.load(f"input_data/cost_lst_{target_num_terms}_random.pt")
-    dist_lst = torch.load(f"input_data/dist_lst_{target_num_terms}_random.pt")
+    data_lst = torch.load(f"../input_data/tsp/data_lst_{target_num_terms}_random.pt")
+    cost_lst = torch.load(f"../input_data/tsp/cost_lst_{target_num_terms}_random.pt")
+    dist_lst = torch.load(f"../input_data/tsp/dist_lst_{target_num_terms}_random.pt")
 
 change_lst = []
 train_curve = [[0 for idx in range(T//10)] for i in range(target_num_input)]
@@ -80,7 +80,7 @@ if "qp" in S:
     qp_markov = np.load(f"train/final_sol_0.01_{num_terms}_pgd_random.npy")
     print("qp")
 if S == "mst":
-    mst_markov = torch.load(f"input_data/W_{num_terms}_mst.pt")
+    mst_markov = torch.load(f"../input_data/tsp/W_{num_terms}_mst.pt")
 if gen:
     while len(input_lst) < target_num_input:
         points, cost = data_lst[idx], cost_lst[idx]
@@ -93,9 +93,9 @@ if gen:
         idx += 1
 
     idx = 0
-    torch.save(input_lst, f"input_data/input_lst_{num_terms}.pt")
+    torch.save(input_lst, f"../input_data/tsp/input_lst_{num_terms}.pt")
 else:
-    input_lst = torch.load(f"input_data/input_lst_{num_terms}.pt")
+    input_lst = torch.load(f"../input_data/tsp/input_lst_{num_terms}.pt")
 
 # class MatrixModel(nn.Module):
 #     def __init__(self, num_terms, alg):

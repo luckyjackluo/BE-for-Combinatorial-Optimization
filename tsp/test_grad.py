@@ -67,9 +67,9 @@ input_lst = []
 #train_curve = []
 #val_curve = []
 #if "random" in S:
-data_lst = torch.load(f"input_data/data_lst_{target_num_terms}.pt")
-#perm_lst = torch.load(f"input_data/perm_lst_{target_num_terms}.pt")
-dist_lst = torch.load(f"input_data/dist_lst_{target_num_terms}.pt")
+data_lst = torch.load(f"../input_data/tsp/data_lst_{target_num_terms}.pt")
+#perm_lst = torch.load(f"../input_data/tsp/perm_lst_{target_num_terms}.pt")
+dist_lst = torch.load(f"../input_data/tsp/dist_lst_{target_num_terms}.pt")
 
 if S == "predict":
     gen_perm_model.load_state_dict(torch.load("predict_s.model"))
@@ -113,7 +113,7 @@ def objective_function(P, D, n):
     return obj
 
 if S == "mst":
-    W_init_lst = torch.load(f"W_{num_terms}_mst.pt")
+    W_init_lst = torch.load(f"../input_data/tsp/W_{num_terms}_mst.pt")
 if S == "qp":
     W_init_lst = torch.Tensor(np.load(f"train/final_sol_0.01_{num_terms}_pgd_markov.npy")[:, 0])
 

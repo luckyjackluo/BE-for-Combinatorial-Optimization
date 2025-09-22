@@ -228,7 +228,7 @@ def solve_qap_instance(file_path, time_limit=None):
 
 def main():
     # Get all .dat files from the qap/prob directory
-    prob_dir = 'qap/input_data/prob'
+    prob_dir = '../input_data/qap/prob'
     instance_files = [f for f in os.listdir(prob_dir) if f.endswith('.dat')]
     
     # Sort files by size (smaller instances first)

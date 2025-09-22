@@ -124,9 +124,9 @@ num_terms = target_num_terms
 target_num_input = 1000
 gen = True
 input_lst = []
-data_lst = torch.load(f"input_data/data_lst_{target_num_terms}.pt")
-cost_lst = torch.load(f"input_data/cost_lst_{target_num_terms}.pt")
-dist_lst = torch.load(f"input_data/dist_lst_{target_num_terms}.pt")
+data_lst = torch.load(f"../input_data/tsp/data_lst_{target_num_terms}.pt")
+cost_lst = torch.load(f"../input_data/tsp/cost_lst_{target_num_terms}.pt")
+dist_lst = torch.load(f"../input_data/tsp/dist_lst_{target_num_terms}.pt")
 
 change_lst = []
 train_curve = [[0 for idx in range(T//10)] for i in range(target_num_input)]
@@ -146,7 +146,7 @@ print(f"Starting data preparation - target_num_input: {target_num_input}, num_te
 
 
 print("Loading existing input list...")
-input_lst = torch.load(f"input_data/input_lst_{num_terms}_adjacency.pt")
+input_lst = torch.load(f"../input_data/tsp/input_lst_{num_terms}_adjacency.pt")
 print(f"Loaded input_lst with {len(input_lst)} instances")
 
 # Load heatmaps in order

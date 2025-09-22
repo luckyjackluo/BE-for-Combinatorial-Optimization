@@ -48,7 +48,7 @@ def main():
         print("CUDA not available, using CPU instead")
     
     # Set directory for the synthetic dataset
-    qap_dir = "qap/input_data/synthetic"
+    qap_dir = "../input_data/qap/synthetic"
 
     # Setup logging
     log_filename = setup_logging("synthetic", args.model_path.split('/')[-1], args.device_idx)

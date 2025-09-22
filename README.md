@@ -141,40 +141,6 @@ Frank-Wolfe algorithm for optimization over the Birkhoff polytope:
 # Frank-Wolfe steps to maintain double stochasticity
 # Implementation in solve_qap_grad_be.py and test_grad_be.py
 ```
-
-## Experimental Results
-
-### QAP Performance
-
-Our method shows significant improvements over baseline approaches:
-
-| Instance | Size | Scipy Objective | BE Objective | Improvement |
-|----------|------|-----------------|--------------|-------------|
-| tai10a   | 10×10| 157,954        | 135,640     | 14.13%      |
-| nug12    | 12×12| 596            | 588         | 1.34%       |
-| tai15a   | 15×15| 397,376        | 393,734     | 0.92%       |
-
-### TSP Performance
-
-BE consistently finds high-quality solutions for TSP instances of various sizes.
-
-### DFASP Performance
-
-Effective optimization of directed feedback arc set problems on random graphs.
-
-## Neural Combinatorial Optimization
-
-The repository includes unsupervised neural approaches that leverage the differentiability of BE:
-
-```python
-# Set Transformer for QAP
-class SetTransformerQAP(nn.Module):
-    """
-    Permutation-equivariant model for QAP based on Set encoders
-    """
-    # Implementation in train_transformer_qap.py
-```
-
 ## Data Organization
 
 All data files are centralized in the `input_data/` directory:
@@ -182,21 +148,6 @@ All data files are centralized in the `input_data/` directory:
 - **QAP Data**: Real instances from QAPLIB and synthetic geometric instances
 - **TSP Data**: Concorde-format instances and processed PyTorch tensors
 - **DFASP Data**: Erdos-Rényi random graphs with various parameters
-
-## Key Properties of Birkhoff Extension
-
-1. **Continuity**: The extension is continuous and almost-everywhere differentiable
-2. **Rounding Guarantee**: Any solution can be rounded to a permutation without increasing the objective
-3. **Efficiency**: Polynomial-time computable extension
-4. **Flexibility**: Different score matrices yield different extensions
-5. **Local Improvement**: Can improve any existing solution
-
-## Theoretical Contributions
-
-- **Continuous Birkhoff Decomposition**: Novel decomposition that is continuous and differentiable
-- **Rounding Guarantees**: Theoretical guarantees on solution quality after rounding
-- **Optimization Properties**: Minima of the extension correspond to minima over permutations
-- **Neural Integration**: Framework for unsupervised neural combinatorial optimization
 
 ## Citation
 

@@ -47,8 +47,8 @@ target_num_terms = int(sys.argv[4])
 num_terms = target_num_terms
 target_num_input = 3
 input_lst = []
-data_lst = torch.load(f"input_data/data_lst_{target_num_terms}.pt")
-cost_lst = np.load(f"input_data/cost_lst_{num_terms}_clock.npy")
+data_lst = torch.load(f"../input_data/tsp/data_lst_{target_num_terms}.pt")
+cost_lst = np.load(f"../input_data/tsp/cost_lst_{num_terms}_clock.npy")
 change_lst = []
 train_curve = [[0 for idx in range(T//10)] for i in range(target_num_input)]
 hard_train_curve = [[0 for idx in range(T//10)] for i in range(target_num_input)]
@@ -90,7 +90,7 @@ assert len(hashmap_size) == target_num_input
 assert len(input_lst) == target_num_input
 print(alg)
 
-perms_lst = torch.load(f"input_data/greedy_{num_terms}_clock.pt")
+perms_lst = torch.load(f"../input_data/tsp/greedy_{num_terms}_clock.pt")
 trees_lst = [[] for idx in range(len(input_lst))]
 
 for j_idx in tqdm(range(len(input_lst))):

@@ -110,7 +110,7 @@ def main():
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--test_data_dir', type=str, default='test_data', help='Directory containing heatmap files')
-    parser.add_argument('--input_data', type=str, default='input_data/data_lst_20.pt', help='Path to original data points')
+    parser.add_argument('--input_data', type=str, default='../input_data/tsp/data_lst_20.pt', help='Path to original data points')
     parser.add_argument('--output', type=str, default='decoded_tours.pt', help='Output file for decoded tours')
     args = parser.parse_args()
 
