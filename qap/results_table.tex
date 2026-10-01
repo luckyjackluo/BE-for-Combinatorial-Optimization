@@ -1,0 +1,19 @@
+\begin{table}[h]
+\centering
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{l|cccc}
+\toprule
+\textbf{Method} & \textbf{Run-time (secs)} & \textbf{\# of epochs} & \textbf{Avg. Objective} $\downarrow$ & \textbf{Gap from best \%} $\downarrow$ \\
+\midrule
+FAQ & --- & --- & 77,894,862 & \textbf{0.00\%} \\
+Ours (BE w/ Grad+Sink, Random Init.) & 2,000 & --- & 109,894,812 & 41.08\% \\
+Ours (BE w/ Grad+Sink, Random Init.) & 4,000 & --- & 90,244,871 & 15.85\% \\
+Ours (BE w/ FW, Random Init.) & 2,000 & --- & 122,393,212 & 57.13\% \\
+Ours (BE w/ FW, Random Init.) & 4,000 & --- & 89,114,150 & 14.40\% \\
+Ours (BE w/ FW, FAQ Init.) & 2,000 & --- & 79,823,681 & 2.48\% \\
+\bottomrule
+\end{tabular}
+}
+\caption{Comparison of QAP solution methods on large-scale instances (n=1000). Results averaged over 15 instances (FAQ, BE FW+FAQ) or 10 instances (other BE methods).}
+\label{tab:large_scale_qap_results}
+\end{table}
